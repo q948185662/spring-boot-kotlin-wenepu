@@ -5,10 +5,7 @@ import com.cutiechi.wenepu.exception.TokenErrorException
 import com.cutiechi.wenepu.service.ScoreService
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @CrossOrigin
@@ -43,5 +40,34 @@ class ScoreController {
             }
             """.trimIndent()
         }
+    }
+
+    @PostMapping("/scores", produces = ["application/json;charset=UTF-8"])
+    fun getScores(
+            semester: String,
+            @RequestHeader("webToken") webToken: String
+    ): String = try {
+        val scores = service.getScores(semester, webToken)
+        """
+        {
+            "code": 200,
+            "message": "获取成绩成功！",
+            "scores": $scores
+        }
+        """.trimIndent()
+    } catch (e: TokenErrorException) {
+        """
+        {
+            "code": 403,
+            "message": "web token 错误，获取成绩失败！"
+        }
+        """.trimIndent()
+    } catch (e: ServerErrorException) {
+        """
+        {
+            "code": 500,
+            "message": "服务器错误，获取成绩失败！"
+        }
+        """.trimIndent()
     }
 }
