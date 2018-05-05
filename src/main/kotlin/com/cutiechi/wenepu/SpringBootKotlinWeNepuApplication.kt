@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class SpringBootKotlinWenepuApplication
+class SpringBootKotlinWeNepuApplication
 
 fun main(args: Array<String>) {
-    runApplication<SpringBootKotlinWenepuApplication>(*args)
+    runApplication<SpringBootKotlinWeNepuApplication>(*args)
 }
