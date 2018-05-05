@@ -101,4 +101,42 @@ class ScoreServiceImpl : ScoreService {
             throw ServerErrorException()
         }
     }
+
+    override fun getScoreDetail(
+            scoreDetailUrl: String,
+            webToken: String
+    ): String {
+        val connection = Jsoup.connect("http://jwgl.nepu.edu.cn$scoreDetailUrl")
+                .cookie("JSESSIONID", webToken)
+                .timeout(6000)
+        return try {
+            val document = connection.post()
+            val title = document.title()
+            when {
+                title != "出错页面" -> {
+                    val regular = document.getElementById("mxh").select("td")[0].text()
+                    val regularProportion = document.getElementById("mxh").select("td")[1].text()
+                    val midterm = document.getElementById("mxh").select("td")[2].text()
+                    val midtermProportion = document.getElementById("mxh").select("td")[3].text()
+                    val endterm = document.getElementById("mxh").select("td")[4].text()
+                    val endtermProportion = document.getElementById("mxh").select("td")[5].text()
+                    val total = document.getElementById("mxh").select("td")[6].text()
+                    """
+                    {
+                        "regular": "$regular",
+                        "regularProportion": "$regularProportion",
+                        "midterm": "$midterm",
+                        "midtermProportion": "$midtermProportion",
+                        "endterm": "$endterm",
+                        "endtermProportion": "$endtermProportion",
+                        "total": "$total"
+                    }
+                    """.trimIndent()
+                }
+                else -> throw TokenErrorException()
+            }
+        } catch (exception: java.lang.Exception) {
+            throw ServerErrorException()
+        }
+    }
 }
