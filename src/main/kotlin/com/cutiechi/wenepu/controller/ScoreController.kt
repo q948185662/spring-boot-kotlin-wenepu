@@ -70,4 +70,33 @@ class ScoreController {
         }
         """.trimIndent()
     }
+
+    @PostMapping("/scores/detail", produces = ["application/json;charset=UTF-8"])
+    fun getScoreDetail(
+            scoreDetailUrl: String,
+            @RequestHeader("webToken") webToken: String
+    ): String = try {
+        val scoreDetail = service.getScoreDetail(scoreDetailUrl, webToken)
+        """
+        {
+            "code": 200,
+            "message": "获取成绩详情成功！",
+            "scoreDetail": $scoreDetail
+        }
+        """.trimIndent()
+    } catch (e: TokenErrorException) {
+        """
+        {
+            "code": 403,
+            "message": "web token 错误，获取成绩详情失败！"
+        }
+        """.trimIndent()
+    } catch (e: ServerErrorException) {
+        """
+        {
+            "code": 500,
+            "message": "服务器错误，获取成绩详情失败！"
+        }
+        """.trimIndent()
+    }
 }
