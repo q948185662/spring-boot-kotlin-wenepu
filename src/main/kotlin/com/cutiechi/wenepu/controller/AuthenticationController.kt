@@ -45,4 +45,32 @@ class AuthenticationController {
             """.trimIndent()
         }
     }
+
+    @PostMapping("/web-token", produces = ["application/json;charset=UTF-8"])
+    fun getWebToken(userName: String, password: String): String {
+        return try {
+            val webToken = service.getWebToken(userName, password)
+            """
+            {
+                "code": 200,
+                "message": "获取 web token 成功！",
+                "appToken": "$webToken"
+            }
+            """.trimIndent()
+        } catch (exception: AuthenticationErrorException) {
+            """
+            {
+                "code": 401,
+                "message": "用户名或密码错误，获取 web token 失败！"
+            }
+            """.trimIndent()
+        } catch (exception: ServerErrorException) {
+            """
+            {
+                "code": 500,
+                "message": "服务器错误，获取 web token 失败！"
+            }
+            """.trimIndent()
+        }
+    }
 }
