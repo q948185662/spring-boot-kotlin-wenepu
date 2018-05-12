@@ -33,7 +33,7 @@ class AuthenticationController {
             """
             {
                 "code": 401,
-                "message": "用户名或密码错误，获取 app token 失败！"
+                "message": "学号或密码错误，获取 app token 失败！"
             }
             """.trimIndent()
         } catch (exception: ServerErrorException) {
@@ -54,14 +54,14 @@ class AuthenticationController {
             {
                 "code": 200,
                 "message": "获取 web token 成功！",
-                "appToken": "$webToken"
+                "webToken": "$webToken"
             }
             """.trimIndent()
         } catch (exception: AuthenticationErrorException) {
             """
             {
                 "code": 401,
-                "message": "用户名或密码错误，获取 web token 失败！"
+                "message": "学号或密码错误，获取 web token 失败！"
             }
             """.trimIndent()
         } catch (exception: ServerErrorException) {

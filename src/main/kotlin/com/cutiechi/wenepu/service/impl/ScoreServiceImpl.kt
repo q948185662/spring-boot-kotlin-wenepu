@@ -42,7 +42,7 @@ class ScoreServiceImpl : ScoreService {
 
     override fun getScores(semester: String, webToken: String): String {
         val connection = Jsoup.connect("http://jwgl.nepu.edu.cn/xszqcjglAction.do?method=queryxscj")
-                .data("kksj", semester)
+                .data("kksj", if (semester == "全部学期") "" else semester)
                 .cookie("JSESSIONID", webToken)
                 .timeout(6000)
         return try {
