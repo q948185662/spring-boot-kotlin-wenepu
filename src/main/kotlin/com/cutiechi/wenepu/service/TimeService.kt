@@ -1,7 +1,7 @@
 package com.cutiechi.wenepu.service
 
 interface TimeService {
-    fun getCurrentTime(
+    fun getCurrentWeek(
             currentDate: String,
             appToken: String
     ): String

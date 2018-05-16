@@ -12,7 +12,7 @@ import java.lang.Exception
 @Service
 class TimeServiceImpl : TimeService {
 
-    override fun getCurrentTime(
+    override fun getCurrentWeek(
             currentDate: String,
             appToken: String
     ): String {
@@ -34,8 +34,8 @@ class TimeServiceImpl : TimeService {
                     val data = response.body()?.string()
                     when {
                         data?.length != 16 && data != null -> data.replace("zc", "weekly")
-                                .replace("s_time", "weekStartTime")
-                                .replace("e_time", "weekEndTime")
+                                .replace("s_time", "weekStartDate")
+                                .replace("e_time", "weekEndDate")
                                 .replace("xnxqh", "semester")
                         else -> throw TokenErrorException()
                     }
